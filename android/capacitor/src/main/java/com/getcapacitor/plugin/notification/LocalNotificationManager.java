@@ -43,13 +43,17 @@ public class LocalNotificationManager {
   private static final String DEFAULT_PRESS_ACTION = "tap";
 
   private Context context;
-  private Activity activity;
+  private Class<? extends Activity> notificationIntentActivityClass;
   private NotificationStorage storage;
 
   public LocalNotificationManager(NotificationStorage notificationStorage, Activity activity) {
+    this(notificationStorage, activity, activity.getClass());
+  }
+  
+  public LocalNotificationManager(NotificationStorage notificationStorage, Context context, Class<? extends Activity> notificationIntentActivityClass) {
     storage = notificationStorage;
-    this.activity = activity;
-    this.context = activity;
+    this.notificationIntentActivityClass = notificationIntentActivityClass;
+    this.context = context;
   }
 
   /**
@@ -215,7 +219,7 @@ public class LocalNotificationManager {
 
   @NonNull
   private Intent buildIntent(LocalNotification localNotification, String action) {
-    Intent intent = new Intent(context, activity.getClass());
+    Intent intent = new Intent(context, notificationIntentActivityClass);
     intent.setAction(Intent.ACTION_MAIN);
     intent.addCategory(Intent.CATEGORY_LAUNCHER);
     intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
