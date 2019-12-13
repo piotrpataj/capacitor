@@ -155,6 +155,12 @@ public class LocalNotificationManager {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_LIGHTS);
 
+    LocalNotificationSchedule schedule = localNotification.getSchedule();
+    if(schedule != null && schedule.getAt() != null){
+      mBuilder.setWhen(schedule.getAt().getTime());
+    }
+
+
     String sound = localNotification.getSound();
     if (sound != null) {
       Uri soundUri = Uri.parse(sound);
